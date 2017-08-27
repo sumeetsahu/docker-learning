@@ -27,9 +27,8 @@ public class Department {
 
     private String email;
     
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="EMPLOYEE_ID")
-    private Employee hod;
+    private Long hodId;
+   
     
 	public Long getId() {
 		return id;
@@ -55,12 +54,12 @@ public class Department {
 		this.email = email;
 	}
 
-	public Employee getHod() {
-		return hod;
+	public Long getHodId() {
+		return hodId;
 	}
 
-	public void setHod(Employee hod) {
-		this.hod = hod;
+	public void setHodId(Long hodId) {
+		this.hodId = hodId;
 	}
 
 

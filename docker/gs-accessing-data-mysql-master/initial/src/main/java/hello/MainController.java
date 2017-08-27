@@ -56,9 +56,8 @@ public class MainController {
 		
 		if(hodId != null && !hodId.isEmpty())
 		{
-			Long id = Long.parseLong(hodId);
-			Employee emp = empRepository.findOne(id);
-			dept.setHod(emp);
+			Long id = Long.parseLong(hodId);			
+			dept.setHodId(id);
 		}
 		
 		deptRepository.save(dept);
@@ -80,8 +79,7 @@ public class MainController {
 		if(hodId != null && !hodId.isEmpty())
 		{
 			Long empid = Long.parseLong(hodId);
-			Employee emp = empRepository.findOne(empid);
-			dept.setHod(emp);
+			dept.setHodId(empid);
 		}
 		
 		deptRepository.save(dept);
@@ -160,9 +158,8 @@ public class MainController {
 		emp.setName(name);
 		emp.setEmail(email);
 		
-		Long id = Long.parseLong(deptId);
-		Department dept = deptRepository.findOne(id);
-		emp.setDepartment(dept);
+		Long id = Long.parseLong(deptId);		
+		emp.setDepartment(id);
 		
 			
 		empRepository.save(emp);
@@ -181,9 +178,8 @@ public class MainController {
 		emp.setName(name);
 		emp.setEmail(email);
 		
-		Long deptid = Long.parseLong(deptId);
-		Department dept = deptRepository.findOne(deptid);
-		emp.setDepartment(dept);
+		Long deptid = Long.parseLong(deptId);		
+		emp.setDepartment(deptid);
 		
 			
 		empRepository.save(emp);
@@ -216,7 +212,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/employee/delete/empId}") // Map ONLY GET Requests
+	@GetMapping(path="/employee/delete/{empId}") // Map ONLY GET Requests
 	public @ResponseBody String deleteEmployee (@PathVariable String empId) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
