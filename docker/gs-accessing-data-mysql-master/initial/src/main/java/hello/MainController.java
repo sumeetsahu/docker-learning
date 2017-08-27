@@ -1,5 +1,8 @@
 package hello;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,7 +67,7 @@ public class MainController {
 		return dept;
 	}
 	
-	@GetMapping(path="/department/update/{deptId}") // Map ONLY GET Requests
+	@GetMapping(path="/department/{deptId}/update") // Map ONLY GET Requests
 	public @ResponseBody Department updateDepartment (@PathVariable String deptId, @RequestParam String name
 			, @RequestParam String email, @RequestParam(defaultValue = "") String hodId) {
 		// @ResponseBody means the returned String is the response, not a view name
@@ -86,7 +89,7 @@ public class MainController {
 		return dept;
 	}
 	
-	@GetMapping(path="/department/get/all") // Map ONLY GET Requests
+	@GetMapping(path="/department/all") // Map ONLY GET Requests
 	public @ResponseBody Iterable<Department> getAllDept () {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -95,7 +98,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/department/get/{deptId}") // Map ONLY GET Requests
+	@GetMapping(path="/department/{deptId}") // Map ONLY GET Requests
 	public @ResponseBody Department getDept (@PathVariable String deptId) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -112,7 +115,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/department/delete/{deptId}") // Map ONLY GET Requests
+	@GetMapping(path="/department/{deptId}/delete") // Map ONLY GET Requests
 	public @ResponseBody String deleteDept (@PathVariable String deptId) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -129,7 +132,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/department/delete/all") // Map ONLY GET Requests
+	@GetMapping(path="/department/all/delete") // Map ONLY GET Requests
 	public @ResponseBody String deleteAllDept () {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -144,6 +147,80 @@ public class MainController {
 		
 		
 	}
+	
+	@GetMapping(path="/department/{deptId}/employee/all") // Map ONLY GET Requests
+	public @ResponseBody Iterable<Employee> listAllEmployee (@PathVariable String deptId) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		
+		try {	
+			Long id = Long.parseLong(deptId);
+			List<Employee> employees = new ArrayList<Employee>();
+
+			for (Employee employee : empRepository.findAll()) {
+				if(employee.getDepartmentId()==id) {
+					employees.add(employee);
+				}
+					
+			}
+			
+			return employees;
+			
+		} catch(Exception e)
+		{
+			return null;
+		}		
+		
+		
+	}
+	
+	@GetMapping(path="/department/{deptId}/employee") // Map ONLY GET Requests
+	public @ResponseBody Iterable<Employee> listEmployee (@PathVariable String deptId,@RequestParam String name) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		
+		try {	
+			Long id = Long.parseLong(deptId);
+			List<Employee> employees = new ArrayList<Employee>();
+
+			for (Employee employee : empRepository.findAll()) {
+				if(employee.getDepartmentId()==id && employee.getName().contains(name)) {
+					employees.add(employee);
+				}
+					
+			}
+			
+			return employees;
+			
+		} catch(Exception e)
+		{
+			return null;
+		}		
+		
+		
+	}
+	
+	@GetMapping(path="/department/{deptId}/hod") // Map ONLY GET Requests
+	public @ResponseBody Employee getHod (@PathVariable String deptId) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		
+		try {	
+			Long id = Long.parseLong(deptId);
+			Long hodId = deptRepository.findOne(id).getHodId();
+			Employee hod = empRepository.findOne(hodId);
+						
+			return hod;
+			
+		} catch(Exception e)
+		{
+			return null;
+		}		
+		
+		
+	}
+	
+	
 	
 	
 	
@@ -166,7 +243,7 @@ public class MainController {
 		return emp;
 	}
 	
-	@GetMapping(path="/employee/update/{empId}") // Map ONLY GET Requests
+	@GetMapping(path="/employee/{empId}/update") // Map ONLY GET Requests
 	public @ResponseBody Employee updateEmployee (@PathVariable String empId, @RequestParam String name
 			, @RequestParam String email, @RequestParam String deptId) {
 		// @ResponseBody means the returned String is the response, not a view name
@@ -186,7 +263,7 @@ public class MainController {
 		return emp;
 	}
 	
-	@GetMapping(path="/employee/get/all") // Map ONLY GET Requests
+	@GetMapping(path="/employee/all") // Map ONLY GET Requests
 	public @ResponseBody Iterable<Employee> getAllEmp () {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -195,7 +272,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/employee/get/{empId}") // Map ONLY GET Requests
+	@GetMapping(path="/employee/{empId}") // Map ONLY GET Requests
 	public @ResponseBody Employee getEmp (@PathVariable String empId) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -212,7 +289,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/employee/delete/{empId}") // Map ONLY GET Requests
+	@GetMapping(path="/employee/{empId}/delete") // Map ONLY GET Requests
 	public @ResponseBody String deleteEmployee (@PathVariable String empId) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -229,7 +306,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping(path="/employee/delete/all") // Map ONLY GET Requests
+	@GetMapping(path="/employee/all/delete") // Map ONLY GET Requests
 	public @ResponseBody String deleteAllEmployee () {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
