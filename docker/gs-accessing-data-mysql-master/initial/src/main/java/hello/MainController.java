@@ -59,7 +59,10 @@ public class MainController {
 		
 		if(hodId != null && !hodId.isEmpty())
 		{
-			Long id = Long.parseLong(hodId);			
+			Long id = Long.parseLong(hodId);
+			if(empRepository.findOne(id)==null) {
+				return null;
+			}
 			dept.setHodId(id);
 		}
 		
@@ -82,6 +85,10 @@ public class MainController {
 		if(hodId != null && !hodId.isEmpty())
 		{
 			Long empid = Long.parseLong(hodId);
+			
+			if(empRepository.findOne(empid)==null) {
+				return null;
+			}
 			dept.setHodId(empid);
 		}
 		
@@ -235,7 +242,12 @@ public class MainController {
 		emp.setName(name);
 		emp.setEmail(email);
 		
-		Long id = Long.parseLong(deptId);		
+		Long id = Long.parseLong(deptId);
+		
+		if(deptRepository.findOne(id)==null){
+			return null;
+		}
+		
 		emp.setDepartment(id);
 		
 			
@@ -255,7 +267,11 @@ public class MainController {
 		emp.setName(name);
 		emp.setEmail(email);
 		
-		Long deptid = Long.parseLong(deptId);		
+		Long deptid = Long.parseLong(deptId);
+		if(deptRepository.findOne(deptid)==null){
+			return null;
+		}
+		
 		emp.setDepartment(deptid);
 		
 			
