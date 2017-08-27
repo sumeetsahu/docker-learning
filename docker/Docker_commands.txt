@@ -1,0 +1,9 @@
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker run --name docker-mysql-1 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql:8.0
+docker run --name docker-phpmyadmin-1 -d --link docker-mysql-1:db -p 9080:80 phpmyadmin/phpmyadmin
+docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 --link docker-mysql-1:mysql -t docker-springwithmysql
+mysql -h localhost -P 3306 --protocol=tcp -u root
+create database db_example; -- Create the new database
+create user 'springuser'@'localhost' identified by 'ThePassword'; -- Creates the user
+grant all on db_example.* to 'springuser'@'localhost'; -- Gives all the privileges to the new user on the newly created database
